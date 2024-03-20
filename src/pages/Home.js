@@ -1,11 +1,9 @@
+import React from 'react'
 import { useEffect, useState } from 'react';
-import './App.css';
 import { io } from 'socket.io-client';
 import { Routes, Route } from 'react-router-dom';
-import Login from './pages/Login';
-import Home from './pages/Home';
 
-function App() {
+const Home = () => {
     const [socket, setSocket] = useState(null);
     const [recipientSocketId, setRecipientSocketId] = useState('');
     const [messages, setMessages] = useState([]);
@@ -65,11 +63,30 @@ function App() {
     }
 
     return (
-        <Routes>
-            <Route index element={<Home />} />
-            <Route path='/login' element={<Login />} />
-        </Routes>
-    );
+        <div>
+            <br/>
+            <button onClick={startConversation}>open message</button>
+            <button onClick={leave}>Leave</button>
+            <input 
+                type="text" 
+                value={recipientSocketId} 
+                onChange={(e) => setRecipientSocketId(e.target.value)} 
+                placeholder="Recipient's Socket ID" 
+            />
+            <button onClick={startChat}>send message</button>
+            <div>
+                <h1>Received Messages:</h1>
+                <ul>
+                    {messages.map((msg, index) => (
+                        <li key={index}>
+                            <strong>From: {msg.senderSocketId}</strong>
+                            <p>{msg.message}</p>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </div>
+    )
 }
 
-export default App;
+export default Home
