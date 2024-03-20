@@ -63,6 +63,7 @@ function App() {
 
     return (
         <div>
+            <br/>
             <button onClick={startConversation}>open message</button>
             <button onClick={leave}>Leave</button>
             <input 
