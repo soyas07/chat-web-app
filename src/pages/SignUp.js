@@ -1,33 +1,33 @@
 import React, { useContext, useState } from 'react'
+import { Container, Wrapper } from '../components/Containers/Containers'
 import { Alert, Button, Fade, Stack, TextField, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import GlobalContext from '../context/GlobalContext';
-import { Link, useNavigate } from 'react-router-dom';
 
-import { Container, Wrapper } from '../components/Containers/Containers';
-
-const Login = () => {
+const SignUp = () => {
     const { url } = useContext(GlobalContext);
+    
     // local state to handle error and form input
     const [status, setStatus] = useState({
         success: false,
-        error: false
+        error: ''
     });
     const [errorStatus, setErrorStatus] = useState({
+        username: false,
         email: false,
         password: false
     });
     const [errorText, setErrorText] = useState({
+        username: '',
         email: '',
         password: '',
     });
     const [input, setInput] = useState({
+        username: '',
         email: '',
         password: '',
     });
-
-    // react router to redirect
-    const navigate = useNavigate();
 
     // event handlers
     const handleChange = (e) => {
@@ -51,79 +51,67 @@ const Login = () => {
         });
     }
 
-    const handleClick = async(e) => {
+    const handleClick = async() => {
+        // validate the form
+        if (!input.username) {
+            setErrorStatus(prevStat => ({
+                ...prevStat,
+                username: true
+            }));
+            setErrorText(prevStat => ({
+                ...prevStat,
+                username: "Enter your username"
+            }));
+            return;
+        } else if (!input.email) {
+            setErrorStatus(prevStat => ({
+                ...prevStat,
+                email: true
+            }));
+            setErrorText(prevStat => ({
+                ...prevStat,
+                email: "Enter your email"
+            }));
+            return;
+        } else if (!input.password) {
+            setErrorStatus(prevStat => ({
+                ...prevStat,
+                password: true
+            }));
+            setErrorText(prevStat => ({
+                ...prevStat,
+                password: "Enter your password"
+            }));
+            return;
+        }
+
         try {
-            // validate the form
-            if (!input.email) {
-                setErrorStatus(prevStat => ({
-                    ...prevStat,
-                    email: true
-                }));
-                setErrorText(prevStat => ({
-                    ...prevStat,
-                    email: "Enter your email"
-                }));
-                return;
-            } else if (!input.password) {
-                setErrorStatus(prevStat => ({
-                    ...prevStat,
-                    password: true
-                }));
-                setErrorText(prevStat => ({
-                    ...prevStat,
-                    password: "Enter your password"
-                }));
-                return;
-            }
-            const response = await axios.post(`${url.auth}/api/v1/user/login`, 
-                {
-                    email: input.email,
-                    password: input.password,
-                }, { withCredentials: true }
-            );
-            
+            const response = await axios.post(`${url.auth}/api/v1/user/register`, 
+                    {
+                        username: input.username,
+                        email: input.email,
+                        password: input.password,
+                        roles: "admin",
+                    }, { withCredentials: true }
+                );
+
             const data = await response.data;
             if (response.status == 200) {
-                // display the login successfully message
-                if (data.message == 'ok') {
-                    setStatus(prevStat => ({
-                        ...prevStat,
-                        success: true
+                if (data.message.status == 409) {
+                    setStatus(prevState => ({
+                        ...prevState,
+                        error: 'Email already exists!'
                     }));
-                    console.log(data);
-
-                    // redirect to dashboard
-                    // setTimeout(() => {
-                    //     navigate("/test");
-                    // }, 2000);
-                } else if (data.message.status == 401) {
-                    setStatus({ success: false, error: 'Incorrect username or password.' });
-                } else {
-                    setStatus({
-                        success: false,
-                        error: 'Something went wrong!'
-                    })
+                } else if (data.message == 'ok') {
+                    setStatus({ error: false, success: true });
                 }
             }
         } catch (error) {
-            console.log(error)
-            setStatus({
-                success: false,
+            console.log(error);
+            setStatus(prevState => ({
+                ...prevState,
                 error: 'Something went wrong!'
-            })
-        }   
-    }
-
-    const renewLogin = async(e) => {
-        // const response = await axios(`https://api.soyaslimbu.com/api/v1/user/renewToken`, { withCredentials: true });
-        const response = await axios(`${url.auth}/api/v1/user/renewToken`, { withCredentials: true });
-        
-        const data = await response.data;
-        if (response.status == 200) {
-            // store the token in session storage
-        } else if (response.status == 400) {
-            // relogin message
-            
+            }))
         }
     }
 
@@ -134,11 +122,27 @@ const Login = () => {
                     variant='h3' 
                     textAlign='center'
                     marginBottom={6}
-                >Login</Typography>
+                >Sign Up</Typography>
                 <TextField
                     required
                     id="outlined-basic"
-                    placeholder="Email or Username"
+                    placeholder="Username"
+                    variant="outlined"
+                    fullWidth
+                    error={errorStatus.username}
+                    helperText={errorText.username}
+                    InputProps={{
+                        style:{ borderRadius: "25px", padding: ".3rem 1rem", maxHeight: "50px" }
+                    }}
+                    sx={{mb: 2}}
+                    onChange={handleChange}
+                    name='username'
+                    type='text'
+                />
+                <TextField
+                    required
+                    id="outlined-basic"
+                    placeholder="Email"
                     variant="outlined"
                     fullWidth
                     error={errorStatus.email}
@@ -154,22 +158,19 @@ const Login = () => {
                 <TextField
                     required
                     id="outlined-basic"
-                    placeholder="Password"
+                    placeholder="Create password"
                     variant="outlined"
                     fullWidth
                     error={errorStatus.password}
                     helperText={errorText.password}
                     InputProps={{
-                        style:{ borderRadius: "25px", padding: ".3rem 1rem", maxHeight: "50px" }
+                        style:{ borderRadius: "25px", padding: ".3rem 1rem", maxHeight: "50px"}
                     }}
                     name="password"
                     type='password'
                     onChange={handleChange}
                 />
-                <div style={{textAlign:'right', marginBottom:'1.5rem'}}>
-                    <Typography variant='caption' style={{fontWeight: '600'}}>Forgot Password?</Typography>
-                </div>
-                
+                <div style={{marginBottom: "1.5rem"}}></div>
                 <Button 
                     variant='contained'
                     sx={{ mb: 2 }}  
@@ -177,17 +178,14 @@ const Login = () => {
                     onClick={handleClick}
                     style={{ minHeight:'40px', borderRadius: '25px', fontSize: '1rem' }}
                 >
-                    Login
+                    Sign Up
                 </Button>
                 <div style={{textAlign:'center', marginBottom:'1.5rem'}}>
-                    <Typography variant='caption' style={{fontWeight: '600'}}>Don't have an account? <span style={{fontSize:'.85rem'}}><Link style={{color:'black'}} to='/signup'>Sign Up</Link></span></Typography>
+                    <Typography variant='caption' style={{fontWeight: '600'}}>Already have an account? <span style={{fontSize:'.85rem'}}><Link style={{color:'black'}} to='/login'>Login</Link></span></Typography>
                 </div>
-                {/* <Button variant='contained' fullWidth onClick={renewLogin}>
-                    Re-Login
-                </Button> */}
                 <Fade in={status.success} style={{display:`${status.success ? 'block' : 'none'}`}}>
                     <Stack sx={{ width: '100%' }} spacing={2}>
-                        <Alert severity="success">Login Success.</Alert>
+                        <Alert severity="success">User created!</Alert>
                     </Stack>
                 </Fade>
                 <Fade in={status.error} style={{display:`${status.error ? 'block' : 'none'}`}}>
@@ -200,4 +198,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default SignUp
