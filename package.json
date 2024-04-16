@@ -1,4 +1,6 @@
 {
+  "homepage": "./",
+  "proxy": "http://localhost:5000",
   "name": "chat-app",
   "version": "0.1.0",
   "private": true,
@@ -21,7 +23,6 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.16.0"
   },
-  
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
