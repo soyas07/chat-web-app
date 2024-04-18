@@ -13,5 +13,5 @@ export const Wrapper = styled.div`
     padding: 2rem;
     background-color: #fff;
     border-radius: 25px; /* Add border-radius for smooth curve */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add box shadow */
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px; /* Add box shadow */
 `;

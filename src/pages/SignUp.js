@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { Container, Wrapper } from '../components/Containers/Containers'
-import { Alert, Button, Fade, Stack, TextField, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Alert, Button, CircularProgress, Fade, Stack, TextField, Typography } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import GlobalContext from '../context/GlobalContext';
 
@@ -28,6 +28,10 @@ const SignUp = () => {
         email: '',
         password: '',
     });
+
+    const [isLoading, setIsLoading] = useState(false);
+    // react router to redirect
+    const navigate = useNavigate();
 
     // event handlers
     const handleChange = (e) => {
@@ -86,6 +90,7 @@ const SignUp = () => {
         }
 
         try {
+            setIsLoading(true);
             const response = await axios.post(`${url.auth}/api/v1/user/register`, 
                     {
                         username: input.username,
@@ -104,6 +109,10 @@ const SignUp = () => {
                     }));
                 } else if (data.message == 'ok') {
                     setStatus({ error: false, success: true });
+                    // redirect to dashboard
+                    setTimeout(() => {
+                        navigate("/");
+                    }, 2000);
                 }
             }
         } catch (error) {
@@ -112,6 +121,8 @@ const SignUp = () => {
                 ...prevState,
                 error: 'Something went wrong!'
             }))
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -178,7 +189,7 @@ const SignUp = () => {
                     onClick={handleClick}
                     style={{ minHeight:'40px', borderRadius: '25px', fontSize: '1rem' }}
                 >
-                    Sign Up
+                    {!isLoading ? 'Sign Up' : <CircularProgress size={30} style={{color:'white'}}/>}
                 </Button>
                 <div style={{textAlign:'center', marginBottom:'1.5rem'}}>
                     <Typography variant='caption' style={{fontWeight: '600'}}>Already have an account? <span style={{fontSize:'.85rem'}}><Link style={{color:'black'}} to='/login'>Login</Link></span></Typography>

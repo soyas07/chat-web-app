@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { Alert, Button, Fade, Stack, TextField, Typography } from '@mui/material';
+import { Alert, Button, CircularProgress, Fade, Stack, TextField, Typography } from '@mui/material';
 import axios from 'axios';
 import GlobalContext from '../context/GlobalContext';
 import { Link, useNavigate } from 'react-router-dom';
@@ -25,6 +25,8 @@ const Login = () => {
         email: '',
         password: '',
     });
+
+    const [isLoading, setIsLoading] = useState(false);
 
     // react router to redirect
     const navigate = useNavigate();
@@ -75,6 +77,9 @@ const Login = () => {
                 }));
                 return;
             }
+
+            // set the loading 
+            setIsLoading(true);
             const response = await axios.post(`${url.auth}/api/v1/user/login`, 
                 {
                     email: input.email,
@@ -93,9 +98,9 @@ const Login = () => {
                     console.log(data);
 
                     // redirect to dashboard
-                    // setTimeout(() => {
-                    //     navigate("/test");
-                    // }, 2000);
+                    setTimeout(() => {
+                        navigate("/");
+                    }, 2000);
                 } else if (data.message.status == 401) {
                     setStatus({ success: false, error: 'Incorrect username or password.' });
                 } else {
@@ -111,7 +116,9 @@ const Login = () => {
                 success: false,
                 error: 'Something went wrong!'
             })
-        }   
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     const renewLogin = async(e) => {
@@ -177,7 +184,7 @@ const Login = () => {
                     onClick={handleClick}
                     style={{ minHeight:'40px', borderRadius: '25px', fontSize: '1rem' }}
                 >
-                    Login
+                    {!isLoading ? 'Login' : <CircularProgress size={30} style={{color:'white'}}/>}
                 </Button>
                 <div style={{textAlign:'center', marginBottom:'1.5rem'}}>
                     <Typography variant='caption' style={{fontWeight: '600'}}>Don't have an account? <span style={{fontSize:'.85rem'}}><Link style={{color:'black'}} to='/signup'>Sign Up</Link></span></Typography>
