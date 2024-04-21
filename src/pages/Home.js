@@ -1,44 +1,47 @@
-import React, { useContext, useEffect, useState } from 'react'
-import axios from 'axios';
-import GlobalContext from '../context/GlobalContext';
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import useAuth from '../hooks/useAuth';
 
 const Home = () => {
-    const { url } = useContext(GlobalContext);
+    const { authorize } = useAuth();
     const [error, setError] = useState(false);
+    const [isLoading, setIsLoading] = useState({
+        auth: true
+    });
 
     // react router to redirect
     const navigate = useNavigate();
 
     useEffect(() => {
-        const authorize = async() => {
+        const checkAuth = async() => {
             try {
-                const response = await axios(`${url.auth}/api/v1/auth`, { withCredentials: true });
-                const data = await response.data;
-                if (response.status == 200) {
-                    if (data.message == 'ok') {
-
-                    } else {
-                        setError('Something went wrong');
-                        setTimeout(() => {
-                            navigate("/login");
-                        }, 2000);
-                    }
-                }
+                setIsLoading(prevAuth => ({
+                    ...prevAuth,
+                    auth: true,
+                }));
+                await authorize();
+                setIsLoading(prevAuth => ({
+                    ...prevAuth,
+                    auth: false,
+                }));
             } catch (error) {
-                setError('Something went wrong');
+                setError(true);
+                // Redirect to login page after 2 seconds
                 setTimeout(() => {
                     navigate("/login");
                 }, 2000);
             }
         }
-
-        authorize();
-    }, [])
+        
+        // Set timer 2 seconds so that it might take time for refres token to renew token
+        setTimeout(() => {
+            checkAuth();
+        }, 2000);
+    }, []);
     
 
     return (
-        <div>{!error ? <div>Dashboard</div> : error}</div>
+        <div>{!isLoading.auth ? <div>Dashboard</div> : <div>Redirecting...</div>}</div>
     )
 }
 
