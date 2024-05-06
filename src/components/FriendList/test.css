@@ -1,0 +1,28 @@
+.blur {
+    filter: blur(30px);
+    position: absolute;
+}
+
+.container {
+    filter: blur(30px);
+    /* box-shadow: inset 0 0 300px 0px white; */
+    /* backdrop-filter: saturate(180%) blur(17.5px); */
+    max-width: 270px;
+    /* border: 1px solid black; */
+    /* background-color: rgba(0, 0, 0, 0.55); */
+    padding: 0.5rem 1rem;
+    /* box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px; */
+    border-radius: 12px;
+    mix-blend-mode: lighten;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+
+.profileIcon {
+    border-radius: 100%;
+    height: 35px;
+    width: 35px;
+}

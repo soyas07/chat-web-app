@@ -14,7 +14,7 @@ function App() {
         typography: {
             fontFamily: 'Roboto',
             h3: {
-                fontFamily: "Oswald",
+                fontFamily: "Inter",
                 fontWeight: 500,
             }
         }

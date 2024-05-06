@@ -15,3 +15,13 @@ export const Wrapper = styled.div`
     border-radius: 25px; /* Add border-radius for smooth curve */
     box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px; /* Add box shadow */
 `;
+
+export const GlassContainer = styled.div`
+    /* background-color: rgba(255, 255, 255, 0.05); */
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+    backdrop-filter: saturate(180%) blur(17.5px);
+    padding: 0.5rem 1rem;
+    border-radius: 16px;
+    width: ${prop => prop.width};
+    height: ${prop => prop.height};
+`;
