@@ -12,7 +12,7 @@ const FriendList = ({ username, icon, message, notification, time }) => {
         max-width: 270px;
         border: 2px solid rgba(0, 0, 0, 0);
         
-        background-color: rgba(255, 255, 255, 0.05);
+        background-color: rgb(255 255 255 / 27%);
         padding: 0.5rem 1rem;
         box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
         border-radius: 12px;
