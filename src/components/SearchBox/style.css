@@ -1,0 +1,27 @@
+.box-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.search-input {
+    padding: 0.8rem 1rem;
+    padding-left: 2.5rem;
+    border-radius: 25px;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(0, 0, 0, 0);
+    outline: none;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 13px;
+    transition: border 0.3s ease;
+    
+} 
+
+.search-input::placeholder {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.search-input:focus,
+.search-input:hover {
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}

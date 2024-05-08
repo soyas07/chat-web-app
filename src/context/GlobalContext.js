@@ -1,4 +1,5 @@
-import React, { createContext } from 'react'
+import React, { createContext, useState } from 'react'
+import sample from '../assets/profile-pic.png';
 
 const GlobalContext = createContext();
 
@@ -18,10 +19,36 @@ export const GlobalProvider= ({ children }) => {
     }
     console.log(url)
 
+    const [searchValue, setSearchValue] = useState('');
+    const [friendLists, setFriendLists] = useState([
+        {
+            icon: sample,
+            username: 'John Doe',
+            message: 'Hey buddy! what r u doing tonight...',
+            notification: '4',
+            time: '9:57 AM'
+        },
+        {
+            username: 'Alan Smith',
+            message: 'Hey buddy! what r u doing tonight...',
+            time: '9:57 AM'
+        },
+        {
+            username: 'John Wick',
+            message: 'Hey buddy! what r u doing tonight...',
+            notification: '2',
+            time: '9:57 AM'
+        }
+    ]);
+
     return (
         <GlobalContext.Provider 
             value={{ 
                 url,
+                searchValue, 
+                setSearchValue,
+                friendLists,
+                setFriendLists
             }}>
             {children}
         </GlobalContext.Provider>
