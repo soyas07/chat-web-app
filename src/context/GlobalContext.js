@@ -48,7 +48,7 @@ export const GlobalProvider= ({ children }) => {
                 searchValue, 
                 setSearchValue,
                 friendLists,
-                setFriendLists
+                setFriendLists,
             }}>
             {children}
         </GlobalContext.Provider>
