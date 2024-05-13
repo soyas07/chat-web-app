@@ -12,3 +12,13 @@ html {
     font-family: "Playfair Display", serif;
     font-optical-sizing: auto;
 }
+
+.test-container {
+    min-height: 100vh;
+    background-image: url('assets/bg-3.jpg');
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

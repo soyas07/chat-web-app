@@ -5,12 +5,14 @@ import Home from './pages/Home';
 import Test from './pages/Test';
 import { ThemeProvider } from '@emotion/react';
 import { createTheme } from '@mui/material';
-import PlayFair from './fonts/PlayfairDisplay-VariableFont_wght.ttf';
 import { GlobalProvider } from './context/GlobalContext';
 import SignUp from './pages/SignUp';
 
 function App() {
     const theme = createTheme({
+        palette: {
+            primary: { main: '#0288d1' }
+        },
         typography: {
             fontFamily: 'Roboto',
             h3: {
