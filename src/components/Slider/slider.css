@@ -1,0 +1,61 @@
+.toggle-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    font-size: .85rem;
+    font-family: "Roboto";
+}
+
+.toggleContainer {
+    width: 100%;
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    border: 3px solid #343434;
+    border-radius: 20px;
+    backdrop-filter: saturate(180%) blur(17.5px);
+    border: 2px solid rgba(0, 0, 0, 0);
+    background-color: rgb(255 255 255 / 27%);
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+    mix-blend-mode: lighten;
+    color: #fff;
+    cursor: pointer;
+}
+.toggleContainer::before {
+    content: '';
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    left: 0%;
+    border-radius:20px;
+    background: #0288d1;
+    transition: all 0.3s;
+}
+.toggleCheckbox:checked + .toggleContainer::before {
+    left: 50%;
+}
+.toggleContainer div {
+    padding: .5rem;
+    text-align: center;
+    z-index: 1;
+}
+.toggleCheckbox {
+    display: none;
+}
+.toggleCheckbox:checked + .toggleContainer div:first-child{
+    color: fff;
+    transition: color 0.3s;
+}
+.toggleCheckbox:checked + .toggleContainer div:last-child{
+    color: #fff;
+    transition: color 0.3s;
+}
+.toggleCheckbox + .toggleContainer div:first-child{
+    color: #fff;
+    transition: color 0.3s;
+}
+.toggleCheckbox + .toggleContainer div:last-child{
+    color: white;
+    transition: color 0.3s;
+}

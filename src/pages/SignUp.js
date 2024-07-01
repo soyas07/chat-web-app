@@ -128,7 +128,7 @@ const SignUp = () => {
     }
 
     return (
-        <div className='test-container'>
+        <div className='main-container flex-center'>
             <Container>
                 <GlassContainer>
                     <Wrapper>
