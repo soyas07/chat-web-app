@@ -1,7 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
 
-
-
 * {
     margin: 0;
     padding: 0;
@@ -11,14 +9,132 @@ html {
     box-sizing: border-box;
     font-family: "Playfair Display", serif;
     font-optical-sizing: auto;
+    font-size: 14px;
 }
 
-.test-container {
+.main-container {
     min-height: 100vh;
-    background-image: url('assets/bg-3.jpg');
+    background-image: url('assets/bg.jpg');
     background-position: center;
     background-size: cover;
+}
+
+.flex-center {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    overflow: auto;
+    height: 600px;
+}
+
+.chat-header {
+    position: sticky;
+}
+
+.chat-header-content {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.chat-footer-content {
+    
+}
+
+.message-wrapper {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    gap: 10px;
+}
+
+.message-textbox {
+    resize: none;
+    box-sizing: border-box; /* Include padding and border in the element's total width */
+    width: 100%;
+    backdrop-filter: saturate(180%) blur(17.5px);
+    border: 2px solid rgba(0, 0, 0, 0);
+    background-color: rgb(255 255 255 / 27%);
+    padding: 1rem 1rem;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
+    border-radius: 12px;
+    mix-blend-mode: lighten;
+    display: flex;
+    justify-content: space-between;
+    transition: border 0.3s ease;
+    outline: none;
+    font-size: 1rem;
+    font-family: "Roboto";
+    color: white;
+    max-height: 50px;
+}
+
+.message-textbox:hover,
+.message-textbox:focus {
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+
+.send-btn {
+    border-radius: 9px;
+    background-color: #0288d1;
+    padding: 6px;
+    width: 16px;
+    height: 16px;
+    position: absolute;
+    right: 10px; /* Adjust as necessary */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 62%;
+    transform: translateY(-50%) translateX(-30%);
+}
+
+.plane-btn {
+    filter: invert(100%) brightness(1000%);
+}
+
+.send-btn:hover {
+    cursor: pointer;
+}
+
+.profile-container {
+    position: relative; /* Ensure the container can be the reference point for absolute positioning */
+    display: inline-block; /* Adjust as necessary */
+}
+
+.online-status {
+    position: absolute;
+    bottom: 0; /* Adjust as needed */
+    right: 0; /* Adjust as needed */
+    width: 7px; /* Adjust size as needed */
+    height: 7px; /* Adjust size as needed */
+    background-color: green; /* Or whatever color you need */
+    border: 2px solid white; /* To create a border effect */
+    border-radius: 50%; /* To make it a circle */
+}
+
+/* scrollbar styles */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
 }

@@ -3,35 +3,9 @@ import React from 'react'
 import defaultProfileIcon from '../../assets/default_profile.png'
 import { Typography } from '@mui/material';
 import './test.css';
+import { ListContainer, ProfileIcon } from '../Containers/Containers';
 
 const FriendList = ({ username, icon, message, notification, time }) => {
-    const Container = styled.div`
-        /* filter: blur(30px); */
-        /* box-shadow: inset 0 0 300px 0px white; */
-        backdrop-filter: saturate(180%) blur(17.5px);
-        max-width: 270px;
-        border: 2px solid rgba(0, 0, 0, 0);
-        
-        background-color: rgb(255 255 255 / 27%);
-        padding: 0.5rem 1rem;
-        box-shadow: rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px;
-        border-radius: 12px;
-        mix-blend-mode: lighten;
-        display: flex;
-        justify-content: space-between;
-        transition: border 0.3s ease;
-        &:hover {
-            cursor: pointer;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-        }
-    `;
-
-    const ProfileIcon = styled.div`
-        border-radius: 100%;
-        height: 35px;
-        width: 35px;
-    `;
-
     const NotificationBadge = styled.span`
         width: 20px;
         height: 22px;
@@ -46,8 +20,8 @@ const FriendList = ({ username, icon, message, notification, time }) => {
     `;
 
     return (
-        <Container>
-            <ProfileIcon><img width="100%" height="100%" src={icon ? icon : defaultProfileIcon} /></ProfileIcon>
+        <ListContainer>
+            <ProfileIcon height="35px" width="35px"><img width="100%" height="100%" src={icon ? icon : defaultProfileIcon} /></ProfileIcon>
             <div>
                 <Typography variant='caption' style={{fontWeight: '600',fontSize:'14px',color:'white'}}>{username}</Typography>
                 <p style={{maxWidth:'130px',lineHeight:'1rem'}}>
@@ -67,7 +41,7 @@ const FriendList = ({ username, icon, message, notification, time }) => {
             {notification && <NotificationBadge>
                 <Typography variant='caption' style={{color:"white"}}>{parseInt(notification) >=4 ? '4' : notification}</Typography>
             </NotificationBadge>}
-        </Container>
+        </ListContainer>
     )
 }
 
