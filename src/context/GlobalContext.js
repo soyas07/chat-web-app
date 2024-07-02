@@ -8,7 +8,8 @@ export const GlobalProvider= ({ children }) => {
     let url = {};
 
     console.log(process.env.NODE_ENV)
-    if (process.env.NODE_ENV == 'production') {
+    console.log("REACT_APP_ENV: " + process.env.REACT_APP_ENV)
+    if (process.env.NODE_ENV == 'production' || process.env.REACT_APP_ENV == 'production') {
         url = {
             auth: 'https://' + process.env.REACT_APP_PROD_API_GATEWAY
         }

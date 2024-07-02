@@ -13,6 +13,8 @@ import defaultProfileIcon from '../assets/profile-pic.png'
 import plane from '../assets/plane.svg';
 import { Typography } from '@mui/material';
 import Slider from '../components/Slider/Slider';
+import Profile from '../components/Profile/Profile';
+import IconBtn from '../components/IconBtn/IconBtn';
 
 const Home = () => {
     const { authorize } = useAuth();
@@ -50,11 +52,11 @@ const Home = () => {
         
         // Set timer 2 seconds so that it might take time for refres token to renew token
         setTimeout(() => {
-            // checkAuth();
+            checkAuth();
         }, 2000);
     }, []);
 
-    // if (!isLoading.auth && !logoLoader)
+    if (!isLoading.auth && !logoLoader)
         return (
             <>
                 <div className='main-container'>
@@ -135,22 +137,26 @@ const Home = () => {
                                 <div className='chat-header'>
                                     <Divider marginTop="1rem" />
                                     <textarea name="message-textbox" className='message-textbox' />
-                                    <div className='send-btn'>
-                                        <img width="100%" height="100%" src={plane} className='plane-btn' />
-                                    </div>
+                                    <IconBtn icon={plane} position="absolute" />
                                 </div>
                             </GlassContainer>  
                             <GlassContainer>
-                                Profile 
+                                <Profile 
+                                    icon={defaultProfileIcon} 
+                                    username='John Doe' 
+                                    lastSeen='5 min ago' 
+                                    email="johndoe@gmail.com" 
+                                    phone="+1 323 234 1325" 
+                                /> 
                             </GlassContainer>
                         </ColumnLayout>
                     </div>
                 </div>
             </>
         )
-    // else {
-    //     return <Loader />
-    // }
+    else {
+        return <Loader />
+    }
 }
 
 export default Home
