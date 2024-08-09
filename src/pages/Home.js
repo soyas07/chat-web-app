@@ -15,6 +15,7 @@ import { Typography } from '@mui/material';
 import Slider from '../components/Slider/Slider';
 import Profile from '../components/Profile/Profile';
 import IconBtn from '../components/IconBtn/IconBtn';
+import { io } from 'socket.io-client';
 
 const Home = () => {
     const { authorize } = useAuth();
@@ -25,6 +26,8 @@ const Home = () => {
     const [isLoading, setIsLoading] = useState({
         auth: true
     });
+
+    const [socket, setSocket] = useState(null);
 
     // react router to redirect
     const navigate = useNavigate();
@@ -41,6 +44,10 @@ const Home = () => {
                     ...prevAuth,
                     auth: false,
                 }));
+                // connect to chat server
+                const server = io("http://localhost:8080");
+                setSocket(server);
+                server.emit('user');
             } catch (error) {
                 setError(true);
                 // Redirect to login page after 2 seconds

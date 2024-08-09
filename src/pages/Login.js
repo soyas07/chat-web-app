@@ -8,6 +8,7 @@ import { Container, GlassContainer, Wrapper } from '../components/Containers/Con
 import useAuth from '../hooks/useAuth'; 
 import Loader from '../components/Loader/Loader';
 import logo from '../assets/icon-logo.png';
+import logger from '../utils/logger';
 
 const Login = () => {
     const { url } = useContext(GlobalContext);
@@ -40,7 +41,7 @@ const Login = () => {
 
     // use effects hooks
     useEffect(() => {
-        console.log('second')
+        logger.info('Checking Authentication...');
         const checkAuth = async() => {
             try {
                 setIsLoading(prevStat => ({
@@ -49,6 +50,7 @@ const Login = () => {
                 }));
                 await authorize();
                 // redirect to dashboard
+                logger.info('Redirecting to Dashboard');
                 setTimeout(() => {
                     navigate("/");
                 }, 2000);
@@ -57,6 +59,7 @@ const Login = () => {
                     ...prevStat,
                     auth: false
                 }));
+                logger.error(error);
             }
         }
 
