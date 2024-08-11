@@ -127,20 +127,23 @@ const Login = () => {
             );
             
             const data = await response.data;
+
             if (response.status == 200) {
                 // display the login successfully message
-                if (data.message == 'ok') {
+                if (data) {
                     setStatus(prevStat => ({
                         ...prevStat,
                         success: true
                     }));
                     console.log(data);
+                    // store the user details
+                    localStorage.setItem("user", JSON.stringify(data)); // store in local storage
 
                     // redirect to dashboard
                     setTimeout(() => {
                         navigate("/");
                     }, 2000);
-                } else if (data.message.status == 401) {
+                } else if (data.message.status == 403) {
                     setStatus({ success: false, error: 'Incorrect username or password.' });
                 } else {
                     setStatus({

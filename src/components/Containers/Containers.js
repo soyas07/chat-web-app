@@ -34,7 +34,7 @@ export const ListContainer = styled.div`
     /* box-shadow: inset 0 0 300px 0px white; */
     backdrop-filter: saturate(180%) blur(17.5px);
     max-width: ${prop => (!prop.maxWidth) ? '270px' : prop.maxWidth };
-    border: 2px solid rgba(0, 0, 0, 0);
+    border: ${(prop) => (prop.active ? "2px solid rgba(255, 255, 255, 0.3)" : "2px solid rgba(0, 0, 0, 0)")};
 
     background-color: rgb(255 255 255 / 27%);
     padding: 0.5rem 1rem;

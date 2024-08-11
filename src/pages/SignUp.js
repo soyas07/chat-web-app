@@ -12,7 +12,7 @@ const SignUp = () => {
     // local state to handle error and form input
     const [status, setStatus] = useState({
         success: false,
-        error: ''
+        error: false
     });
     const [errorStatus, setErrorStatus] = useState({
         username: false,
@@ -141,7 +141,6 @@ const SignUp = () => {
                         >Sign Up</Typography>
                         <TextField
                             required
-                            id="outlined-basic"
                             placeholder="Username"
                             variant="outlined"
                             fullWidth
@@ -163,7 +162,6 @@ const SignUp = () => {
                         />
                         <TextField
                             required
-                            id="outlined-basic"
                             placeholder="Email"
                             variant="outlined"
                             fullWidth
@@ -185,7 +183,6 @@ const SignUp = () => {
                         />
                         <TextField
                             required
-                            id="outlined-basic"
                             placeholder="Create password"
                             variant="outlined"
                             fullWidth

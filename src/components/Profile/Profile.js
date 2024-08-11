@@ -7,34 +7,35 @@ import shareIcon from '../../assets/share.svg'
 import IconBtn from '../IconBtn/IconBtn'
 import phoneIcon from '../../assets/phone.svg'
 
+const Wrapper = styled.div`
+    padding: 1.1rem;
+`;
+
+const BtnWrapper = styled.div`
+    padding: 0.2rem .5rem;
+    border-radius: 5px;
+    max-width: 90px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(0, 0, 0, 0);
+    outline: none;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.85rem;
+    transition: border 0.3s ease;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    img {
+        filter: invert(100%) brightness(1000%);
+    }
+
+    &:hover {
+        border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+`;
+
+
 const Profile = ({ icon, username, email, phone, lastSeen }) => {
-    const Wrapper = styled.div`
-        padding: 1.1rem;
-    `;
-
-    const BtnWrapper = styled.div`
-        padding: 0.2rem .5rem;
-        border-radius: 5px;
-        max-width: 90px;
-        background-color: rgba(0, 0, 0, 0.3);
-        border: 2px solid rgba(0, 0, 0, 0);
-        outline: none;
-        color: rgba(255, 255, 255, 0.8);
-        font-size: 0.85rem;
-        transition: border 0.3s ease;
-        display: flex;
-        align-items: center;
-        cursor: pointer;
-
-        img {
-            filter: invert(100%) brightness(1000%);
-        }
-
-        &:hover {
-            border: 2px solid rgba(255, 255, 255, 0.3);
-        }
-    `;
-
     return (
         <div style={{display:'flex',flexDirection:'column',justifyContent:'space-between',height:'100%'}}>
             <div>

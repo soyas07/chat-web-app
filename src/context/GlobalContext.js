@@ -8,14 +8,17 @@ export const GlobalProvider= ({ children }) => {
     let url = {};
 
     console.log(process.env.NODE_ENV)
-    console.log("REACT_APP_ENV: " + process.env.REACT_APP_ENV)
+    console.log("REACT_APP_ENV: " + process.env.REACT_APP_ENV);
+    
     if (process.env.NODE_ENV == 'production' || process.env.REACT_APP_ENV == 'production') {
         url = {
-            auth: 'https://' + process.env.REACT_APP_PROD_API_GATEWAY
+            auth: 'https://' + process.env.REACT_APP_PROD_API_GATEWAY,
+            chatServer: 'https://' + process.env.REACT_APP_PROD_CHAT_SERVER
         }
     } else {
         url = {
-            auth: 'http://' + process.env.REACT_APP_DEV_API_GATEWAY
+            auth: 'http://' + process.env.REACT_APP_DEV_API_GATEWAY,
+            chatServer: 'http://' + process.env.REACT_APP_DEV_CHAT_SERVER
         }
     }
     console.log(url)

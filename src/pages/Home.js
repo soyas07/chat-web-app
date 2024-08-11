@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../hooks/useAuth';
 import FriendList from '../components/FriendList/FriendList';
@@ -16,10 +16,13 @@ import Slider from '../components/Slider/Slider';
 import Profile from '../components/Profile/Profile';
 import IconBtn from '../components/IconBtn/IconBtn';
 import { io } from 'socket.io-client';
+import logger from '../utils/logger';
+import useTime from '../hooks/useTime';
+import axios from 'axios';
 
 const Home = () => {
     const { authorize } = useAuth();
-    const { friendLists, searchValue } = useContext(GlobalContext);
+    const { friendLists, searchValue, url } = useContext(GlobalContext);
     const logoLoader = useLoader();
 
     const [error, setError] = useState(false);
@@ -27,10 +30,32 @@ const Home = () => {
         auth: true
     });
 
+    // handles the active friends chat list
+    const [activeIndex, setActiveIndex] = useState(0); // Set default active item
+
+    // web socket states handler
     const [socket, setSocket] = useState(null);
+    const [messages, setMessages] = useState([]);
+    const [roomId, setRoomId] = useState('');
+
+    // handles the user login details
+    const [user, setUser] = useState({});
+    // handles messages
+    const [userMessage, setUserMessage] = useState([]);
+    const [sender, setSender] = useState({
+        name: 'john',
+        socket_id: '',
+        message: '',
+        last_update: '',
+    });
+    const { getCurrentTime } = useTime();
 
     // react router to redirect
     const navigate = useNavigate();
+    // Reference for scrolling
+    const messagesEndRef = useRef(null);
+    // Reference for text message clear
+    const textareaRef = useRef(null);
 
     useEffect(() => {
         const checkAuth = async() => {
@@ -45,9 +70,8 @@ const Home = () => {
                     auth: false,
                 }));
                 // connect to chat server
-                const server = io("http://localhost:8080");
+                const server = io(url.chatServer);
                 setSocket(server);
-                server.emit('user');
             } catch (error) {
                 setError(true);
                 // Redirect to login page after 2 seconds
@@ -58,10 +82,68 @@ const Home = () => {
         }
         
         // Set timer 2 seconds so that it might take time for refres token to renew token
-        setTimeout(() => {
+        setTimeout(async () => {
             checkAuth();
+            logger.info(`Getting user details from local storage: `);
+            logger.info(localStorage.getItem("user"));
+            // set the user from local storage
+            setUser(localStorage.getItem("user"));
+            // load the user details and friend details
+            // get the room id 
+            const room_id = "66b44fae654fe561a7c7e70a";
+            // load the initial chat
+            const message = await axios(`${url.chatServer}/api/v1/chats?room_id=${room_id}`);
+            message.data.chats.messages.map((msg) => {
+                console.log(msg)
+                if (msg.sender == 'john')
+                    setUserMessage((prevMsg) => [...prevMsg, { from: msg.sender, message: msg.message, last_update: getCurrentTime() }]);
+            })
         }, 2000);
     }, []);
+
+    // handles the web socket connection and listen to "incoming messages"
+    useEffect(() => {
+        if (socket) {
+            socket.on("connect", () => {
+                // setSender(prevData => ({ ...prevData, socket_id: socket.id }))
+                // console.log(socket.id);
+
+                // socket.on('private_message', ({ from, message }) => {
+                //     console.log(sender.message)
+                //     setMessages((prevMessages) => [...prevMessages, { from, message, last_update: getCurrentTime() }]);
+                // });
+            });
+        }
+    }, [socket]);
+
+    // handles the scrolls messages
+    useEffect(() => {
+        // Scroll to the bottom whenever messages change
+        scrollToBottom();
+    }, [userMessage]);
+    
+    const scrollToBottom = () => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
+
+    const sendMessage = () => {
+        // Clear the textarea value
+        if (textareaRef.current) {
+            textareaRef.current.value = '';
+        }
+        setUserMessage((prevMessage) => [...prevMessage, { from: sender.name, message: sender.message, last_update: getCurrentTime() }]);
+        // socket.emit("send", sender, receiver, roomId);
+    }
+
+
+    const handleItemClick = (index) => {
+        setActiveIndex(index);
+        //TODO: change the chat conversation 
+    };
+
 
     if (!isLoading.auth && !logoLoader)
         return (
@@ -76,16 +158,18 @@ const Home = () => {
                                 {friendLists.filter(friend => (
                                     friend.username.toLowerCase().includes(searchValue.toLowerCase()))
                                 )
-                                .map((list) => (
-                                    <>
+                                .map((list,index) => (
+                                    <React.Fragment key={index}>
                                         <FriendList
                                             icon={list.icon}
                                             username={list.username}
                                             message={list.message}
                                             notification={list.notification}
                                             time={list.time}
+                                            active={index===activeIndex}
+                                            onClick={() => handleItemClick(index)}
                                         /><br/>
-                                    </>
+                                    </React.Fragment>
                                 ))}
                             </GlassContainer>  
                             <GlassContainer maxHeight="800px" minHeight="700px">
@@ -118,14 +202,6 @@ const Home = () => {
                                         <MessageBox message={'hey! how r u?'} />
                                         <MessageBox message={'hey! how r u?'} />
                                         <MessageBox type="friend" message={'hey! how r u? asdf'} />
-                                        {/* <MessageBox message={'hey! how r u?'} /> */}
-                                        {/* <MessageBox message={'hey! how r u?'} /> */}
-                                        {/* <MessageBox message={'hey! how r u?'} /> */}
-                                        {/* <MessageBox message={'hey! how r u?'} /> */}
-                                        {/* <MessageBox message={'hey! how r u?'} /> */}
-                                        {/* <MessageBox message={'hey! how r u?'} /> */}
-                                        {/* <MessageBox message={'hey! how r u?'} /> */}
-                                        {/* <MessageBox message={'hey! how r u?'} /> */}
                                         <MessageBox message={'hey! how r u?'} />
                                         <MessageBox message={'hey! how r u?'} />
                                         <MessageBox message={'hey! how r u?'} />
@@ -139,12 +215,19 @@ const Home = () => {
                                         <MessageBox message={'hey! how r u?'} />
                                         <MessageBox message={'hey! how r u?'} />
                                         <MessageBox message={'hey! how r u?'} />
+                                        {userMessage.map((msg,index) => <MessageBox message={msg.message} key={index} />)}
+                                        <div ref={messagesEndRef} />
                                     </div>
                                 </div>
                                 <div className='chat-header'>
                                     <Divider marginTop="1rem" />
-                                    <textarea name="message-textbox" className='message-textbox' />
-                                    <IconBtn icon={plane} position="absolute" />
+                                    <textarea 
+                                        name="message-textbox" 
+                                        className='message-textbox' 
+                                        onChange={e => setSender(prevData => ({...prevData, message: e.target.value }))} 
+                                        ref={textareaRef}
+                                    />
+                                    <IconBtn icon={plane} position="absolute" onClick={sendMessage} />
                                 </div>
                             </GlassContainer>  
                             <GlassContainer>

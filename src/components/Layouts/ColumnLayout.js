@@ -17,7 +17,9 @@ const LayoutContainer = styled.div`
 const ColumnLayout = ({ widths = [], gap = '0px', children }) => {
     return (
         <LayoutContainer widths={widths} gap={gap}>
-            {children}
+            {React.Children.map(children, (child, index) =>
+                React.cloneElement(child, { key: index })
+            )}
         </LayoutContainer>
     );
 };

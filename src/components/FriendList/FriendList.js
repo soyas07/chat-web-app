@@ -5,22 +5,22 @@ import { Typography } from '@mui/material';
 import './test.css';
 import { ListContainer, ProfileIcon } from '../Containers/Containers';
 
-const FriendList = ({ username, icon, message, notification, time }) => {
-    const NotificationBadge = styled.span`
-        width: 20px;
-        height: 22px;
-        background-color: #0288d1;
-        display: flex;
-        justify-content: center;
-        border-radius: 7px;
-        align-items: center;
-        position: absolute;
-        bottom: 1rem;
-        right: 1rem;
-    `;
+const NotificationBadge = styled.span`
+    width: 20px;
+    height: 22px;
+    background-color: #0288d1;
+    display: flex;
+    justify-content: center;
+    border-radius: 7px;
+    align-items: center;
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+`;
 
+const FriendList = ({ username, icon, message, notification, time, active, onClick }) => {
     return (
-        <ListContainer>
+        <ListContainer active={active} onClick={onClick}>
             <ProfileIcon height="35px" width="35px"><img width="100%" height="100%" src={icon ? icon : defaultProfileIcon} /></ProfileIcon>
             <div>
                 <Typography variant='caption' style={{fontWeight: '600',fontSize:'14px',color:'white'}}>{username}</Typography>
