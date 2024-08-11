@@ -13,7 +13,7 @@ export const GlobalProvider= ({ children }) => {
     if (process.env.NODE_ENV == 'production' || process.env.REACT_APP_ENV == 'production') {
         url = {
             auth: 'https://' + process.env.REACT_APP_PROD_API_GATEWAY,
-            chatServer: 'https://' + process.env.REACT_APP_PROD_CHAT_SERVER
+            chatServer: 'http://' + process.env.REACT_APP_PROD_CHAT_SERVER
         }
     } else {
         url = {
